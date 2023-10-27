@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+    <ul class="delayscroll">
+        <li class="box">順番に表示</li>
+    </ul>
+
+    <div class="height"></div>
+    <h2>スクロール後に表示される</h2>
+    <div class="height"></div>
+
+    <ul class="delayscroll">
+        <li class="box">順番に表示</li>
+        <li class="box">順番に表示</li>
+        <li class="box">順番に表示</li>
+    </ul>
+
+    <!-- jquery -->
+
+    <script>
+
+        const delayscrollanime = () => {
+            let time = 0.2;
+            let value = time;
+
+            $('.delayscroll').each(function () {
+                let scroll = $(window).scrollTop();
+                let wh = $(window).height(); //表示画面の高さ
+                // let elementheight = $('.delayscroll').offset().top;
+                let elementheight = $(this).offset().top;//画面の一番上から要素までの高さ
+                let childs = $(this).children();//delayscrollの子要素を指定
+
+                // console.log(childs);
+                if (scroll >= elementheight - wh) {
+                    // console.log("画面に要素が入った")
+                    // $(childs).addClass('fadein');
+
+                    //要素の数だけ処理を繰り返す
+                    $(childs).each(function () {
+                        // クラス名'fadein'が付与されていなければtrueの処理を行う
+                        // ! => 意味を逆にする
+                        // hasClass => そのクラスを要素が持っていれば～、みたいな
+                        if (!$(this).hasClass('fadein')) {
+                            $(this).addClass('fadein');
+                            $(this).css("animation-delay", value + "s");
+
+                            value = value + time;
+                        };
+                    });
+                } else {
+                    $(childs).removeClass('fadein');
+                };
+            });
+        };
+        
+        $(window).scroll(() => {
+            delayscrollanime();
+        });
+
+        $(window).on('load', () => {
+            delayscrollanime();
+        });
+        //console => jsがきちんと動いているか確認するためのもの
+        //検証ツールの上のバーに'console'があってそこで確認できる
+    </script>
+</body>
+
+</html>
